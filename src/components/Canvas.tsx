@@ -23,6 +23,49 @@ interface DragState {
   elementStartY: number;
 }
 
+// Modal para visualización 3D
+const Tilt3DModal = ({ open, onClose, children }: { open: boolean, onClose: () => void, children: React.ReactNode }) => {
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  // Maneja el efecto tilt interactivo
+  const handleMouseMove = (e: React.MouseEvent) => {
+    const card = cardRef.current;
+    if (!card) return;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const rotateX = ((y - centerY) / centerY) * 12; // inclinación vertical
+    const rotateY = ((x - centerX) / centerX) * -12; // inclinación horizontal
+    card.style.transform = `perspective(700px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+  };
+  const handleMouseLeave = () => {
+    const card = cardRef.current;
+    if (card) card.style.transform = 'perspective(700px) rotateX(0deg) rotateY(0deg)';
+  };
+
+  if (!open) return null;
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+      <div className="absolute inset-0" onClick={onClose} />
+      <div className="relative z-10 flex flex-col items-center">
+        <button onClick={onClose} className="absolute top-2 right-2 bg-white rounded-full shadow p-2 hover:bg-gray-100 text-gray-700">✕</button>
+        <div
+          ref={cardRef}
+          className="transition-transform duration-200 ease-out shadow-2xl rounded-xl bg-white"
+          style={{ width: 400, height: 240, willChange: 'transform' }}
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleMouseLeave}
+        >
+          {children}
+        </div>
+        <div className="mt-4 text-white text-sm">Arrastra el mouse sobre la tarjeta para inspeccionar en 3D</div>
+      </div>
+    </div>
+  );
+};
+
 const Canvas: React.FC<CanvasProps> = ({
   elements,
   selectedElement,
@@ -43,6 +86,7 @@ const Canvas: React.FC<CanvasProps> = ({
     elementStartY: 0,
   });
   const [editingText, setEditingText] = useState<string | null>(null);
+  const [show3D, setShow3D] = useState(false);
 
   const handleExport = async () => {
     if (canvasRef.current) {
@@ -325,6 +369,23 @@ const Canvas: React.FC<CanvasProps> = ({
     }
   };
 
+  // Renderiza la tarjeta completa (canvas) para el modal 3D
+  const renderCard = () => (
+    <div
+      className="relative w-full h-full rounded-xl overflow-hidden"
+      style={{ width, height, background }}
+    >
+      {elements.map(renderElement)}
+      <div 
+        className="absolute inset-0 pointer-events-none opacity-10"
+        style={{
+          backgroundImage: `linear-gradient(to right, #000 1px, transparent 1px),linear-gradient(to bottom, #000 1px, transparent 1px)`,
+          backgroundSize: '20px 20px'
+        }}
+      />
+    </div>
+  );
+
   return (
     <div className="flex flex-col space-y-4">
       <div className="flex justify-between items-center">
@@ -344,39 +405,52 @@ const Canvas: React.FC<CanvasProps> = ({
             <Download className="w-4 h-4" />
             Download
           </button>
+          {/* Botón Visualizar en 3D */}
+          <button
+            onClick={() => setShow3D(true)}
+            className="flex items-center gap-2 px-3 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors"
+          >
+            <span role="img" aria-label="3d">🕶️</span>
+            Visualizar en 3D
+          </button>
         </div>
       </div>
-
+      {/* Responsive canvas container */}
       <div className="flex justify-center">
-        <div
-          ref={canvasRef}
-          className="relative border-2 border-gray-300 rounded-lg overflow-hidden shadow-sm bg-white select-none"
-          style={{
-            width: width,
-            height: height,
-            background: background,
-          }}
-          onClick={handleCanvasClick}
-        >
-          {elements.map(renderElement)}
-          
-          {/* Grid overlay for better positioning */}
-          <div 
-            className="absolute inset-0 pointer-events-none opacity-10"
+        <div className="relative canvas-container">
+          <div
+            ref={canvasRef}
+            className="relative border-2 border-gray-300 rounded-lg overflow-hidden shadow-lg bg-white select-none mx-auto"
             style={{
-              backgroundImage: `
-                linear-gradient(to right, #000 1px, transparent 1px),
-                linear-gradient(to bottom, #000 1px, transparent 1px)
-              `,
-              backgroundSize: '20px 20px'
+              width: width,
+              height: height,
+              background: background,
+              transform: 'scale(1)',
+              transformOrigin: 'center',
             }}
-          />
+            onClick={handleCanvasClick}
+          >
+            {elements.map(renderElement)}
+            <div 
+              className="absolute inset-0 pointer-events-none opacity-10"
+              style={{
+                backgroundImage: `linear-gradient(to right, #000 1px, transparent 1px),linear-gradient(to bottom, #000 1px, transparent 1px)`,
+                backgroundSize: '20px 20px'
+              }}
+            />
+          </div>
+          <div className="mt-2 text-center text-xs text-gray-500">
+            {width} × {height} px
+          </div>
         </div>
       </div>
-      
       <div className="text-center text-sm text-gray-500">
         <p>Haz clic para seleccionar • Arrastra para mover • Doble clic en texto para editar</p>
       </div>
+      {/* Modal 3D */}
+      <Tilt3DModal open={show3D} onClose={() => setShow3D(false)}>
+        {renderCard()}
+      </Tilt3DModal>
     </div>
   );
 };

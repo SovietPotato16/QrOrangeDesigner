@@ -191,36 +191,33 @@ const PropertyPanel: React.FC<PropertyPanelProps> = ({
   );
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 h-fit">
-      <h3 className="text-lg font-semibold text-gray-900 mb-4">Propiedades</h3>
-      
+    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-5 min-h-[400px]">
+      <h3 className="text-xl font-semibold text-gray-900 mb-5">Propiedades</h3>
       <div className="space-y-6">
         {/* Background Settings */}
         <div>
-          <div className="flex items-center gap-2 mb-3">
-            <Palette className="w-4 h-4 text-purple-600" />
-            <span className="font-medium text-gray-700">Fondo</span>
+          <div className="flex items-center gap-3 mb-4">
+            <Palette className="w-6 h-6 text-purple-600" />
+            <span className="font-medium text-gray-700 text-lg">Fondo</span>
           </div>
-          
-          <div className="grid grid-cols-4 gap-2 mb-3">
+          <div className="grid grid-cols-4 gap-3 mb-4">
             {backgroundColors.map((color) => (
               <button
                 key={color}
                 onClick={() => onSetBackground(color)}
-                className={`w-8 h-8 rounded-md border-2 transition-transform hover:scale-110 ${
+                className={`w-10 h-10 rounded-md border-2 transition-transform hover:scale-110 ${
                   currentBackground === color ? 'border-blue-500 ring-2 ring-blue-200' : 'border-gray-300'
                 }`}
                 style={{ backgroundColor: color }}
               />
             ))}
           </div>
-          
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-3">
             {backgroundGradients.map((gradient, index) => (
               <button
                 key={index}
                 onClick={() => onSetBackground(gradient)}
-                className={`w-full h-6 rounded-md border-2 transition-transform hover:scale-105 ${
+                className={`w-full h-8 rounded-md border-2 transition-transform hover:scale-105 ${
                   currentBackground === gradient ? 'border-blue-500 ring-2 ring-blue-200' : 'border-gray-300'
                 }`}
                 style={{ background: gradient }}
@@ -228,34 +225,30 @@ const PropertyPanel: React.FC<PropertyPanelProps> = ({
             ))}
           </div>
         </div>
-
         {/* Element Properties */}
         {selectedElement && (
           <div className="border-t border-gray-200 pt-6">
-            <div className="flex items-center gap-2 mb-4">
-              <TypeIcon className="w-4 h-4 text-blue-600" />
-              <span className="font-medium text-gray-700">Propiedades del Elemento</span>
+            <div className="flex items-center gap-3 mb-4">
+              <TypeIcon className="w-6 h-6 text-blue-600" />
+              <span className="font-medium text-gray-700 text-lg">Propiedades</span>
             </div>
-            
             {selectedElement.type === 'text' && renderTextProperties(selectedElement as TextElement)}
             {(selectedElement.type === 'rectangle' || selectedElement.type === 'circle' || selectedElement.type === 'triangle') && 
               renderShapeProperties(selectedElement as ShapeElement)}
             {selectedElement.type === 'qr' && renderQRProperties(selectedElement as QRElement)}
-            
-            <div className="mt-4 pt-4 border-t border-gray-200">
-              <div className="flex items-center gap-2 mb-3">
-                <Resize className="w-4 h-4 text-green-600" />
-                <span className="font-medium text-gray-700">Posición</span>
+            <div className="mt-6 pt-6 border-t border-gray-200">
+              <div className="flex items-center gap-3 mb-4">
+                <Resize className="w-6 h-6 text-green-600" />
+                <span className="font-medium text-gray-700 text-lg">Posición</span>
               </div>
               {renderPositionProperties(selectedElement)}
             </div>
           </div>
         )}
-        
         {!selectedElement && (
-          <div className="text-center py-8 text-gray-500">
-            <p className="text-sm">Selecciona un elemento para ver sus propiedades</p>
-            <p className="text-xs mt-1">Haz clic en cualquier elemento del canvas</p>
+          <div className="text-center py-10 text-gray-500">
+            <p className="text-base">Selecciona un elemento para ver sus propiedades</p>
+            <p className="text-sm mt-2">Haz clic en cualquier elemento del canvas</p>
           </div>
         )}
       </div>

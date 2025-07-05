@@ -29,24 +29,24 @@ const QRInput: React.FC<QRInputProps> = ({ onGenerateQR, currentText }) => {
   const Icon = currentInsert.icon;
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-      <div className="flex items-center gap-2 mb-4">
-        <QrCode className="w-5 h-5 text-orange-600" />
-        <h3 className="text-lg font-semibold text-gray-900">Generar Código QR</h3>
+    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-2">
+      <div className="flex items-center gap-2 mb-2">
+        <QrCode className="w-4 h-4 text-orange-600" />
+        <h3 className="text-base font-semibold text-gray-900">Generar QR</h3>
       </div>
 
-      <div className="flex gap-2 mb-4 overflow-x-auto">
+      <div className="flex gap-1 mb-2 overflow-x-auto pb-1">
         {Object.entries(quickInserts).map(([key, { icon: TabIcon }]) => (
           <button
             key={key}
             onClick={() => setActiveTab(key as any)}
-            className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+            className={`flex items-center gap-1 px-1 py-1 rounded-md text-xs font-medium transition-colors whitespace-nowrap ${
               activeTab === key
                 ? 'bg-orange-100 text-orange-700 border border-orange-200'
                 : 'bg-gray-50 text-gray-600 hover:bg-gray-100'
             }`}
           >
-            <TabIcon className="w-4 h-4" />
+            <TabIcon className="w-3 h-3" />
             {key === 'text' ? 'Texto' : 
              key === 'url' ? 'URL' : 
              key === 'email' ? 'Email' : 
@@ -56,30 +56,30 @@ const QRInput: React.FC<QRInputProps> = ({ onGenerateQR, currentText }) => {
         ))}
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-2">
         <div className="relative">
-          <Icon className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
+          <Icon className="absolute left-2 top-2 w-3 h-3 text-gray-400" />
           <textarea
             value={text}
             onChange={(e) => setText(e.target.value)}
             placeholder={currentInsert.placeholder}
-            className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-orange-500 resize-none"
-            rows={3}
+            className="w-full pl-6 pr-2 py-1 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-orange-500 resize-none text-sm"
+            rows={2}
           />
         </div>
         
         <button
           type="submit"
           disabled={!text.trim()}
-          className="w-full bg-orange-600 text-white py-3 px-4 rounded-md hover:bg-orange-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors font-medium"
+          className="w-full bg-orange-600 text-white py-1 px-2 rounded-md hover:bg-orange-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors font-medium text-sm"
         >
-          Generar Código QR
+          Generar QR
         </button>
       </form>
 
       {text && (
-        <div className="mt-4 p-3 bg-gray-50 rounded-md">
-          <p className="text-sm text-gray-600">Vista previa: {text.substring(0, 100)}{text.length > 100 ? '...' : ''}</p>
+        <div className="mt-2 p-1 bg-gray-50 rounded-md">
+          <p className="text-xs text-gray-600">Vista previa: {text.substring(0, 50)}{text.length > 50 ? '...' : ''}</p>
         </div>
       )}
     </div>

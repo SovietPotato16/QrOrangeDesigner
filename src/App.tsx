@@ -83,15 +83,15 @@ function App() {
       case 'qr':
         addElement({
           ...baseElement,
-          x: centerX - 60, // Center QR code properly
-          y: centerY - 60,
+          x: centerX - 80,
+          y: centerY - 100,
           type: 'qr',
           size: 120,
           qrData: state.qrData.text,
         });
         break;
     }
-  }, [addElement, state.qrData.text]);
+  }, [addElement, state.qrData.text, state.canvasWidth, state.canvasHeight]);
 
   const handleDuplicateElement = useCallback((id: string) => {
     const element = state.elements.find(el => el.id === id);
@@ -122,7 +122,7 @@ function App() {
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="bg-white shadow-sm border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-6">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-3">
               <div className="flex items-center justify-center w-10 h-10 bg-orange-600 rounded-lg">
@@ -143,18 +143,44 @@ function App() {
         </div>
       </header>
 
-      {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-          {/* Left Sidebar */}
-          <div className="lg:col-span-1 space-y-6">
-            <QRInput
-              onGenerateQR={updateQRData}
-              currentText={state.qrData.text}
-            />
-            
+      {/* Main Content - Improved responsive layout */}
+      <div className="max-w-7xl mx-auto px-1 sm:px-2 lg:px-3 py-2">
+        {/* Mobile Layout (stacked) */}
+        <div className="lg:hidden space-y-4">
+          <QRInput
+            onGenerateQR={updateQRData}
+            currentText={state.qrData.text}
+          />
+          <TemplateSelector onSelectTemplate={handleSelectTemplate} />
+          <Toolbar
+            onAddElement={handleAddElement}
+            selectedElement={state.selectedElement}
+            onDeleteElement={deleteElement}
+            onDuplicateElement={handleDuplicateElement}
+          />
+          <Canvas
+            elements={state.elements}
+            selectedElement={state.selectedElement}
+            onSelectElement={selectElement}
+            onUpdateElement={updateElement}
+            background={state.background}
+            width={state.canvasWidth}
+            height={state.canvasHeight}
+            qrCode={state.qrData.qrCode}
+          />
+          <PropertyPanel
+            selectedElement={selectedElement || null}
+            onUpdateElement={updateElement}
+            onSetBackground={setBackground}
+            currentBackground={state.background}
+          />
+        </div>
+
+        {/* Desktop Layout (grid) */}
+        <div className="hidden lg:grid lg:grid-cols-[minmax(280px,340px)_1fr_minmax(280px,340px)] lg:gap-6">
+          {/* Left Sidebar - Only Plantillas y Herramientas */}
+          <div className="h-full flex flex-col space-y-6">
             <TemplateSelector onSelectTemplate={handleSelectTemplate} />
-            
             <Toolbar
               onAddElement={handleAddElement}
               selectedElement={state.selectedElement}
@@ -163,8 +189,14 @@ function App() {
             />
           </div>
 
-          {/* Canvas Area */}
-          <div className="lg:col-span-2">
+          {/* QRInput arriba, Canvas abajo */}
+          <div className="flex flex-col items-center gap-4">
+            <div className="w-full max-w-lg">
+              <QRInput
+                onGenerateQR={updateQRData}
+                currentText={state.qrData.text}
+              />
+            </div>
             <Canvas
               elements={state.elements}
               selectedElement={state.selectedElement}
@@ -177,8 +209,8 @@ function App() {
             />
           </div>
 
-          {/* Right Sidebar */}
-          <div className="lg:col-span-1">
+          {/* Right Sidebar - Properties */}
+          <div className="h-full flex flex-col">
             <PropertyPanel
               selectedElement={selectedElement || null}
               onUpdateElement={updateElement}
@@ -190,8 +222,8 @@ function App() {
       </div>
 
       {/* Footer */}
-      <footer className="bg-white border-t border-gray-200 mt-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <footer className="bg-white border-t border-gray-200 mt-8">
+        <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-6 py-4">
           <div className="text-center">
             <p className="text-sm text-gray-600">
               Desarrollado con ❤️ por{' '}
@@ -199,9 +231,9 @@ function App() {
                 href="https://digitalorange.com.mx" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="text-orange-600 hover:text-orange-700 font-medium transition-colors"
+                className="text-orange-600 hover:text-orange-700 font-medium"
               >
-                🍊 DigitalOrange.com.mx
+                Digital Orange
               </a>
             </p>
           </div>

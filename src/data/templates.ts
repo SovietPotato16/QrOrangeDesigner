@@ -23,8 +23,8 @@ export const defaultTemplates: Template[] = [
       {
         id: 'qr-code',
         type: 'qr',
-        x: 240,
-        y: 60,
+        x: 220,
+        y: 40,
         size: 160,
         qrData: '',
       },
@@ -74,8 +74,8 @@ export const defaultTemplates: Template[] = [
       {
         id: 'qr-code',
         type: 'qr',
-        x: 240,
-        y: 60,
+        x: 220,
+        y: 40,
         size: 160,
         qrData: '',
       },
@@ -112,8 +112,8 @@ export const defaultTemplates: Template[] = [
       {
         id: 'qr-code',
         type: 'qr',
-        x: 240,
-        y: 60,
+        x: 220,
+        y: 40,
         size: 160,
         qrData: '',
       },
@@ -181,7 +181,7 @@ export const defaultTemplates: Template[] = [
       {
         id: 'qr-code',
         type: 'qr',
-        x: 240,
+        x: 220,
         y: 40,
         size: 160,
         qrData: '',
