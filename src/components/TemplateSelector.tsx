@@ -39,11 +39,6 @@ const TemplateSelector: React.FC<TemplateSelectorProps> = ({ onSelectTemplate })
               <div className="relative z-10 flex flex-col items-center gap-2 text-center px-2">
                 <Sparkles className="w-4 h-4" />
                 <span className="leading-tight text-base">{template.name}</span>
-                {index === 0 && (
-                  <span className="text-xs bg-indigo-500 px-1 py-0.5 rounded text-white">
-                    Por defecto
-                  </span>
-                )}
               </div>
             </div>
           </button>
@@ -75,11 +70,6 @@ const TemplateSelector: React.FC<TemplateSelectorProps> = ({ onSelectTemplate })
                 <div className="relative z-10 flex flex-col items-center gap-2 text-center px-2">
                   <Sparkles className="w-4 h-4" />
                   <span className="leading-tight text-base">{template.name}</span>
-                  {index === 0 && (
-                    <span className="text-xs bg-indigo-500 px-1 py-0.5 rounded text-white">
-                      Por defecto
-                    </span>
-                  )}
                 </div>
               </div>
             </button>

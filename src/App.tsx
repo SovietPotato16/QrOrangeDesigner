@@ -133,12 +133,25 @@ function App() {
                 <p className="text-sm text-gray-500">Crea tarjetas QR profesionales</p>
               </div>
             </div>
-            <button
-              onClick={clearCanvas}
-              className="px-4 py-2 text-sm font-medium text-orange-700 bg-orange-100 rounded-md hover:bg-orange-200 transition-colors"
-            >
-              Limpiar Canvas
-            </button>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={clearCanvas}
+                className="px-4 py-2 text-sm font-medium text-orange-700 bg-orange-100 rounded-md hover:bg-orange-200 transition-colors"
+              >
+                Limpiar Canvas
+              </button>
+              <a
+                href="https://ko-fi.com/saulhinojosa"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 px-3 py-2 bg-white border border-pink-400 shadow rounded-full text-pink-600 hover:bg-pink-50 hover:shadow-md transition-all text-sm font-semibold"
+                style={{ boxShadow: '0 2px 12px 0 rgba(255, 0, 128, 0.10)' }}
+                title="Apóyame en Ko-fi"
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M17.5 3.5H6.5C4.01472 3.5 2 5.51472 2 8V13.5C2 15.9853 4.01472 18 6.5 18H12.5C12.5 19.3807 13.6193 20.5 15 20.5C16.3807 20.5 17.5 19.3807 17.5 18V18.5C19.9853 18.5 22 16.4853 22 14V8C22 5.51472 19.9853 3.5 17.5 3.5Z" stroke="#FF5E5B" strokeWidth="1.5"/><path d="M7.5 10.5C7.5 9.39543 8.39543 8.5 9.5 8.5C10.6046 8.5 11.5 9.39543 11.5 10.5C11.5 12.5 9.5 13.5 9.5 13.5C9.5 13.5 7.5 12.5 7.5 10.5Z" fill="#FF5E5B"/></svg>
+                Ko-fi
+              </a>
+            </div>
           </div>
         </div>
       </header>
